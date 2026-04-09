@@ -10,4 +10,4 @@ An agentic AI framework designed to help the Chinese immigrant community in Minn
 * **Data-Driven:** Designed to integrate with local resource datasets.
 
 ### Architecture
-[![Architecture Blueprint](./MN_Chinese_Resource_Hub_Architecture_Blueprint.jpg](url))
+

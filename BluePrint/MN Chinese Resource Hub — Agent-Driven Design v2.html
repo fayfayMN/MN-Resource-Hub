@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///D:/Claude.code/MN_Hub_AgentDesign_v2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MN Chinese Resource Hub — Agent-Driven Design v2</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #1a2a3a;
+    line-height: 1.55;
+  }
+  :root {
+    --navy:    #1a2e4a;
+    --blue:    #2a6fa8;
+    --blue-lt: #d6ecf8;
+    --orange:  #e07830;
+    --orange-lt:#fde9d4;
+    --teal:    #2aa89e;
+    --teal-lt: #d0f0ed;
+    --red:     #c0392b;
+    --red-lt:  #fde8e6;
+    --green:   #27ae60;
+    --green-lt:#d5f5e3;
+    --purple:  #7c5cbf;
+    --purple-lt:#ede8f8;
+    --gray:    #6b7c93;
+    --gray-lt: #eef2f7;
+    --white:   #ffffff;
+  }
+  .page { max-width: 1160px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(140deg, #0d1f35 0%, #1a4070 60%, #2a6fa8 100%);
+    color: var(--white); border-radius: 16px;
+    padding: 52px 44px; margin-bottom: 44px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -40px; right: -40px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,255,255,.04);
+  }
+  .hero .v-badge {
+    display: inline-block; background: var(--orange);
+    color: #fff; font-size: .72rem; font-weight: 800;
+    padding: 4px 14px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: .06em;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 2.3rem; font-weight: 900; line-height: 1.15; margin-bottom: 14px; }
+  .hero h1 em { font-style: normal; color: #f0b030; }
+  .hero p { font-size: 1.05rem; opacity: .88; max-width: 680px; }
+
+  /* ── Section heading ── */
+  .sh { display: flex; align-items: flex-start; gap: 14px; margin: 52px 0 22px; }
+  .sh .ico {
+    width: 46px; height: 46px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .sh h2 { font-size: 1.55rem; font-weight: 800; }
+  .sh p  { font-size: .9rem; color: var(--gray); margin-top: 3px; }
+
+  /* ── Key insight box ── */
+  .insight {
+    border-radius: 14px; padding: 28px 32px;
+    display: grid; grid-template-columns: auto 1fr; gap: 20px;
+    align-items: center; margin-bottom: 12px;
+  }
+  .insight .ins-icon { font-size: 2.8rem; }
+  .insight h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+  .insight p  { font-size: .9rem; line-height: 1.65; }
+  .insight.old { background: #1e1e2e; color: #bbb; }
+  .insight.old h3 { color: #888; }
+  .insight.new { background: linear-gradient(135deg,#0a2e1a,#1a4a2e); color: #e8f8ef; }
+  .insight.new h3 { color: #6eed9e; }
+
+  /* ── Horizontal flow ── */
+  .hflow { display: flex; align-items: stretch; gap: 0; margin: 24px 0; }
+  .hstep {
+    flex: 1; background: var(--white);
+    padding: 20px 16px; text-align: center;
+    border-top: 4px solid transparent;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+    position: relative;
+  }
+  .hstep:first-child { border-radius: 12px 0 0 12px; }
+  .hstep:last-child  { border-radius: 0 12px 12px 0; }
+  .hstep .hs-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .78rem; font-weight: 800; color: #fff;
+    margin-bottom: 10px;
+  }
+  .hstep .hs-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+  .hstep h4 { font-size: .88rem; font-weight: 800; margin-bottom: 6px; }
+  .hstep p  { font-size: .78rem; color: #4a5568; }
+  .hstep .hs-arrow {
+    position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem; color: var(--gray); z-index: 2;
+  }
+  .hstep:last-child .hs-arrow { display: none; }
+
+  /* ── Cards ── */
+  .card { background: var(--white); border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+
+  /* ── Agent cards ── */
+  .agent-card {
+    background: var(--white); border-radius: 12px; padding: 20px;
+    border-top: 5px solid transparent;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .agent-card .ac-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .agent-card .ac-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .agent-card .ac-name { font-weight: 800; font-size: .95rem; }
+  .agent-card .ac-file { font-size: .72rem; color: var(--gray); font-family: monospace; }
+  .agent-card p { font-size: .82rem; color: #4a5568; margin-bottom: 10px; }
+  .agent-card .ac-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    font-size: .72rem; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px; border: 1px solid currentColor;
+  }
+
+  /* ── Outreach flow ── */
+  .outflow {
+    display: grid;
+    grid-template-columns: 220px auto 220px;
+    grid-template-rows: auto auto auto;
+    gap: 0;
+    align-items: center;
+    justify-items: center;
+    margin: 28px 0;
+  }
+  .of-user, .of-org {
+    border-radius: 12px; padding: 18px 16px; text-align: center;
+    width: 200px;
+  }
+  .of-user { background: var(--blue-lt); }
+  .of-org  { background: var(--green-lt); }
+  .of-user .of-icon, .of-org .of-icon { font-size: 2rem; margin-bottom: 8px; }
+  .of-user h4, .of-org h4 { font-weight: 800; font-size: .9rem; margin-bottom: 4px; }
+  .of-user p, .of-org p { font-size: .78rem; color: #4a5568; }
+
+  .of-center { grid-column: 2; grid-row: 1 / 4; display: flex; flex-direction: column; align-items: center; gap: 0; width: 340px; }
+  .of-agent-box {
+    background: linear-gradient(135deg, var(--navy), #1a4070);
+    color: var(--white); border-radius: 12px; padding: 18px 20px;
+    text-align: center; width: 100%; margin: 8px 0;
+  }
+  .of-agent-box h4 { font-size: .95rem; font-weight: 800; margin-bottom: 6px; }
+  .of-agent-box p  { font-size: .78rem; opacity: .82; }
+  .of-arrow { font-size: 1.6rem; color: var(--orange); font-weight: 900; margin: 2px 0; }
+
+  .of-email-log {
+    background: var(--orange-lt); border-radius: 12px;
+    padding: 14px 16px; font-size: .78rem; color: #4a5568;
+    border: 1px dashed var(--orange); margin: 6px 0; width: 100%;
+  }
+  .of-email-log strong { color: var(--orange); }
+
+  /* ── Audit flow diagram ── */
+  .audit-loop {
+    background: var(--white); border-radius: 14px;
+    padding: 32px; box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .loop-row { display: flex; align-items: center; gap: 0; margin-bottom: 0; }
+  .loop-step {
+    flex: 1; text-align: center; padding: 0 8px;
+    position: relative;
+  }
+  .loop-step .ls-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; margin: 0 auto 10px;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
+  }
+  .loop-step h4 { font-size: .82rem; font-weight: 800; line-height: 1.3; }
+  .loop-step p  { font-size: .72rem; color: var(--gray); margin-top: 3px; }
+  .loop-arrow { font-size: 1.8rem; color: #cbd5e0; flex-shrink: 0; padding: 0 4px; margin-bottom: 32px; }
+
+  /* ── SLA timeline ── */
+  .sla-timeline { position: relative; padding: 8px 0; }
+  .sla-bar {
+    height: 10px; background: linear-gradient(90deg, var(--green), #f0b030, var(--red));
+    border-radius: 5px; margin: 8px 0 24px; position: relative;
+  }
+  .sla-bar .sla-marker {
+    position: absolute; top: -22px;
+    font-size: .7rem; font-weight: 700; white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .sla-bar .sla-marker::after {
+    content: '▼'; display: block; text-align: center;
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    color: inherit;
+  }
+  .sla-tier-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .sla-tier {
+    border-radius: 10px; padding: 14px;
+    border-left: 5px solid transparent;
+  }
+  .sla-tier h4 { font-size: .85rem; font-weight: 800; margin-bottom: 6px; }
+  .sla-tier p  { font-size: .78rem; color: #4a5568; }
+  .sla-tier .t-action { font-size: .74rem; font-weight: 700; margin-top: 8px; }
+
+  /* ── Callout ── */
+  .callout {
+    border-radius: 10px; padding: 14px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-top: 16px;
+  }
+  .callout.info    { background: var(--blue-lt); }
+  .callout.success { background: var(--green-lt); }
+  .callout.warn    { background: var(--orange-lt); }
+  .callout .ci { font-size: 1.2rem; flex-shrink: 0; }
+  .callout p { font-size: .86rem; }
+
+  /* ── Phase table ── */
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+  .phase-col  { border-radius: 12px; padding: 20px; }
+  .phase-col h4 { font-size: .82rem; font-weight: 800; text-transform: uppercase;
+                  letter-spacing: .07em; margin-bottom: 14px; }
+  .phase-col ul { padding-left: 16px; }
+  .phase-col li { font-size: .82rem; color: #4a5568; margin-bottom: 7px; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center; padding-top: 36px; margin-top: 52px;
+    border-top: 1px solid #e2e8f0;
+    color: var(--gray); font-size: .82rem;
+  }
+
+  @media(max-width:850px){
+    .grid2,.grid3,.phase-grid,.sla-tier-row { grid-template-columns: 1fr; }
+    .hflow { flex-direction: column; }
+    .hstep { border-radius: 0; }
+    .hstep:first-child { border-radius: 12px 12px 0 0; }
+    .hstep:last-child  { border-radius: 0 0 12px 12px; }
+    .hstep .hs-arrow   { display: none; }
+    .outflow { grid-template-columns: 1fr; }
+    .of-center { width: 100%; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="v-badge">Design v2 · Agent-Driven Architecture</div>
+    <h1>Agents That <em>Guide, Reach Out,<br>and Hold Orgs Accountable</em></h1>
+    <p>The Hub doesn't just point people to resources — AI agents actively contact organizations, track every call and email, follow up when orgs go silent, and escalate automatically. The user is guided. The org is held to account.</p>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 1: THE CORE VISION SHIFT
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:#fff0e0;">💡</div>
+    <div>
+      <h2>The Vision Shift — What Makes This Different</h2>
+      <p>Old design vs. what we're actually building</p>
+    </div>
+  </div>
+
+  <div class="insight old">
+    <div class="ins-icon">❌</div>
+    <div>
+      <h3>Old Approach: "Here's a phone number, good luck"</h3>
+      <p>The system finds a resource and shows the user a phone number. The user has to make the call themselves. If the org doesn't answer, the system has no idea. There's no tracking, no follow-up, no accountability. The user is left alone to figure it out — exactly the same problem they started with.</p>
+    </div>
+  </div>
+
+  <div class="insight new">
+    <div class="ins-icon">✅</div>
+    <div>
+      <h3>New Approach: Agents Work on the User's Behalf</h3>
+      <p>When a user needs food, housing, or legal help, an <strong>Outreach Agent</strong> sends a direct email or request to the organization on their behalf — with a unique tracking token. A <strong>Response Monitor Agent</strong> watches for replies. If the org doesn't respond in time, a <strong>Follow-up Agent</strong> automatically sends a reminder. If they still don't respond, an <strong>Escalation Agent</strong> contacts the next-best option. Every contact is logged in the Audit DB with timestamps. The user is updated in real time. The org's reliability score is adjusted with every interaction.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 2: THE FULL JOURNEY
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--blue-lt);">🗺️</div>
+    <div>
+      <h2>The Full User Journey — Guided by Agents at Every Step</h2>
+      <p>From first message to confirmed help — every step handled by a specialized agent</p>
+    </div>
+  </div>
+
+  <div class="hflow">
+    <div class="hstep" style="border-color: var(--blue);">
+      <span class="hs-num" style="background:var(--blue);">1</span>
+      <span class="hs-icon">💬</span>
+      <h4>User Asks for Help</h4>
+      <p>Types in Chinese or English: "I need food near me" or "我需要帮助"</p>
+      <div class="hs-arrow">›</div>
+    </div>
+    <div class="hstep" style="border-color:#7c5cbf;">
+      <span class="hs-num" style="background:#7c5cbf;">2</span>
+      <span class="hs-icon">🧭</span>
+      <h4>Intent Agent Understands Why</h4>
+      <p>Detects crisis vs. resource need vs. policy question. Crisis → instant safety response.</p>
+      <div class="hs-arrow">›</div>
+    </div>
+    <div class="hstep" style="border-color:var(--teal);">
+      <span class="hs-num" style="background:var(--teal);">3</span>
+      <span class="hs-icon">🔍</span>
+      <h4>Resource Agent Finds Best Match</h4>
+      <p>Searches verified MN database. Ranks by proximity + reliability score. Shows top 3.</p>
+      <div class="hs-arrow">›</div>
+    </div>
+    <div class="hstep" style="border-color:var(--orange);">
+      <span class="hs-num" style="background:var(--orange);">4</span>
+      <span class="hs-icon">📧</span>
+      <h4>Outreach Agent Contacts Org</h4>
+      <p>Sends email/request to the org on the user's behalf. Stamps timestamp + tracking token in Audit DB.</p>
+      <div class="hs-arrow">›</div>
+    </div>
+    <div class="hstep" style="border-color:var(--red);">
+      <span class="hs-num" style="background:var(--red);">5</span>
+      <span class="hs-icon">⏱️</span>
+      <h4>Monitor Agent Watches</h4>
+      <p>SLA clock starts. Response Monitor checks every hour. No reply? → Trigger follow-up.</p>
+      <div class="hs-arrow">›</div>
+    </div>
+    <div class="hstep" style="border-color:var(--green);">
+      <span class="hs-num" style="background:var(--green);">6</span>
+      <span class="hs-icon">✅</span>
+      <h4>User Gets Confirmed Help</h4>
+      <p>Org replies → user is notified. Org's reliability score updates. Outcome logged.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 3: HOW OUTREACH WORKS
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--orange-lt);">📧</div>
+    <div>
+      <h2>How Agent Outreach Works — The Contact &amp; Audit Loop</h2>
+      <p>Agents make the first contact, log everything, and follow up automatically</p>
+    </div>
+  </div>
+
+  <!-- Outreach flow diagram -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="outflow">
+
+      <!-- Left: User -->
+      <div class="of-user">
+        <div class="of-icon">👤</div>
+        <h4>Community Member</h4>
+        <p>Asks for help in the Hub chat (English or Chinese)</p>
+      </div>
+
+      <!-- Center: Agents -->
+      <div class="of-center">
+        <div class="of-agent-box">
+          <h4>🧠 Orchestrator + Resource Agent</h4>
+          <p>Identifies need, finds top-matched orgs from RAG database, ranks by reliability score</p>
+        </div>
+        <div class="of-arrow">↓</div>
+        <div class="of-email-log">
+          <strong>📧 Outreach Agent sends:</strong><br>
+          "Hello [Org Name], a community member needs [food assistance / housing / etc.] in your area. Can you confirm availability? Reply to confirm: token #A3F92B"<br>
+          <em style="color:#888; font-size:.7rem;">→ Logged in Audit DB: timestamp, org_id, token, category, status=PENDING</em>
+        </div>
+        <div class="of-arrow">↓</div>
+        <div class="of-agent-box" style="background: linear-gradient(135deg,#2a1a0a,#5a3010);">
+          <h4>⏱️ Response Monitor Agent</h4>
+          <p>Checks inbox every hour for token #A3F92B. Runs SLA clock per category.</p>
+        </div>
+        <div class="of-arrow">↓</div>
+        <div class="of-email-log" style="background:var(--red-lt); border-color:var(--red);">
+          <strong style="color:var(--red);">⚠️ No reply after SLA window?</strong><br>
+          Follow-up Agent sends reminder #1 to org.<br>
+          Still no reply? → Escalation Agent contacts next org.<br>
+          <em style="color:#888; font-size:.7rem;">→ sla_breach logged: breach_count++, org reliability score drops</em>
+        </div>
+        <div class="of-arrow">↓</div>
+        <div class="of-email-log" style="background:var(--green-lt); border-color:var(--green);">
+          <strong style="color:var(--green);">✅ Org replies with token #A3F92B</strong><br>
+          Response Monitor detects reply → marks referral RESPONDED.<br>
+          <em style="color:#888; font-size:.7rem;">→ Audit DB: status=responded, org score improves</em>
+        </div>
+      </div>
+
+      <!-- Right: Org -->
+      <div class="of-org">
+        <div class="of-icon">🏢</div>
+        <h4>Organization</h4>
+        <p>Receives email from Hub, confirms availability, replies with tracking token</p>
+      </div>
+
+    </div>
+
+    <div class="callout info">
+      <div class="ci">💡</div>
+      <p><strong>User experience:</strong> The user sees a status badge next to each resource card — "Contacting..." → "Confirmed available ✅" or "Not responding ⚠️ — alternative found." They never have to make a cold call to an unknown org again.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 4: ALL 11 AGENTS
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:#ede8f8;">🤖</div>
+    <div>
+      <h2>The 11 Agents — What Each One Does</h2>
+      <p>Two teams working in parallel: user-facing navigation + accountability enforcement</p>
+    </div>
+  </div>
+
+  <!-- User-facing agents -->
+  <p style="font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--blue); margin-bottom:12px;">👥 Team 1 — User-Facing Navigation Agents (5)</p>
+  <div class="grid3" style="margin-bottom:24px;">
+
+    <div class="agent-card" style="border-color:var(--blue);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--blue-lt);">🧭</div>
+        <div>
+          <div class="ac-name">Intent Router</div>
+          <div class="ac-file">intent_router.py</div>
+        </div>
+      </div>
+      <p>First to run on every message. Detects whether the user needs crisis intervention, a resource, a policy explanation, or a life checklist. Crisis → bypasses everything and returns safety info instantly.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--blue); border-color:var(--blue);">keyword scan</span>
+        <span class="skill-tag" style="color:var(--blue); border-color:var(--blue);">Gemini classify</span>
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">crisis override</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--teal);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--teal-lt);">🔍</div>
+        <div>
+          <div class="ac-name">Resource Finder</div>
+          <div class="ac-file">resource_agent.py</div>
+        </div>
+      </div>
+      <p>Queries the RAG vector database to find verified MN organizations. Ranks results by combining semantic relevance with each org's current reliability score from the Audit DB — so unreliable orgs rank lower.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--teal); border-color:var(--teal);">RAG search</span>
+        <span class="skill-tag" style="color:var(--teal); border-color:var(--teal);">score-weighted rank</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:#7c5cbf;">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--purple-lt);">⚖️</div>
+        <div>
+          <div class="ac-name">Policy Interpreter</div>
+          <div class="ac-file">eligibility_agent.py</div>
+        </div>
+      </div>
+      <p>Decodes complex MN DHS rules — food assistance, childcare subsidies, Public Charge — into plain, culturally appropriate Chinese or English. Uses Gemini 1.5 Flash with MN policy docs as context.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:#7c5cbf; border-color:#7c5cbf;">Gemini Flash</span>
+        <span class="skill-tag" style="color:#7c5cbf; border-color:#7c5cbf;">MN DHS docs</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--orange);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--orange-lt);">🌐</div>
+        <div>
+          <div class="ac-name">Translation Bridge</div>
+          <div class="ac-file">translation_agent.py</div>
+        </div>
+      </div>
+      <p>Ensures every output is culturally nuanced, not word-for-word. Simple UI text → HuggingFace Helsinki-NLP (free, instant). Legal/policy terms → Gemini + Bilingual Glossary JSON (locks MNSure → 明州健康保险).</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--orange); border-color:var(--orange);">HuggingFace ZH↔EN</span>
+        <span class="skill-tag" style="color:var(--orange); border-color:var(--orange);">glossary lock</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--green);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--green-lt);">🗺️</div>
+        <div>
+          <div class="ac-name">Life Navigator</div>
+          <div class="ac-file">navigation_agent.py</div>
+        </div>
+      </div>
+      <p>Generates custom multi-step checklists tailored to the person's situation — "First Week" for newcomers, "Senior Social" for elderly visitors, "Housing Emergency" for those facing eviction. Bilingual output.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--green); border-color:var(--green);">Gemini Flash</span>
+        <span class="skill-tag" style="color:var(--green); border-color:var(--green);">checklist generation</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audit/accountability agents -->
+  <p style="font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--red); margin-bottom:12px;">🔍 Team 2 — Outreach &amp; Accountability Agents (6) · The NEW Team</p>
+  <div class="grid3">
+
+    <div class="agent-card" style="border-color:var(--orange);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--orange-lt);">📧</div>
+        <div>
+          <div class="ac-name">Outreach Agent</div>
+          <div class="ac-file">outreach_agent.py</div>
+        </div>
+      </div>
+      <p>The new core of the accountability system. After the Resource Finder selects an org, this agent sends an outreach email on the user's behalf — with a unique tracking token — and logs the contact in the Audit DB. Phase 2 adds call/SMS via Twilio.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--orange); border-color:var(--orange);">SMTP email</span>
+        <span class="skill-tag" style="color:var(--orange); border-color:var(--orange);">token generation</span>
+        <span class="skill-tag" style="color:var(--orange); border-color:var(--orange);">audit log</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--red);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--red-lt);">⏱️</div>
+        <div>
+          <div class="ac-name">Response Monitor</div>
+          <div class="ac-file">response_monitor.py</div>
+        </div>
+      </div>
+      <p>Runs on a cron schedule (every hour). Scans the inbox for emails containing valid tracking tokens. When a token is found, marks the referral as RESPONDED and updates the org score. When SLA expires with no match, fires a breach event.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">IMAP inbox scan</span>
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">cron job</span>
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">token matching</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:#e8a020;">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:#fff7e0;">🔄</div>
+        <div>
+          <div class="ac-name">Follow-up Agent</div>
+          <div class="ac-file">followup_agent.py</div>
+        </div>
+      </div>
+      <p>Sends a second-attempt email to the org when the first contact goes unanswered past the halfway point of its SLA window. Frames it as a gentle reminder. Also sends the user a status update: "We're still trying to reach [org]."</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:#c07820; border-color:#c07820;">reminder email</span>
+        <span class="skill-tag" style="color:#c07820; border-color:#c07820;">user notification</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--red);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--red-lt);">🚨</div>
+        <div>
+          <div class="ac-name">Escalation Agent</div>
+          <div class="ac-file">escalation_agent.py</div>
+        </div>
+      </div>
+      <p>When an org fully fails its SLA, this agent immediately finds the next-best alternative from the Resource Finder, initiates a new outreach email to that org, and presents the user with an update: "The first org didn't respond — here's who we contacted next."</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">re-query RAG</span>
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">new outreach</span>
+        <span class="skill-tag" style="color:var(--red); border-color:var(--red);">user alert</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:#7c5cbf;">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:var(--purple-lt);">📊</div>
+        <div>
+          <div class="ac-name">Gap Analyst</div>
+          <div class="ac-file">gap_analyst.py</div>
+        </div>
+      </div>
+      <p>Weekly: scans search logs to find resource categories where no verified orgs exist OR all listed orgs are consistently failing. Auto-generates a Gap Report showing which community needs are completely unserved — the core document for advocacy.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:#7c5cbf; border-color:#7c5cbf;">log analysis</span>
+        <span class="skill-tag" style="color:#7c5cbf; border-color:#7c5cbf;">gap report</span>
+      </div>
+    </div>
+
+    <div class="agent-card" style="border-color:var(--navy);">
+      <div class="ac-head">
+        <div class="ac-icon" style="background:#e0e8f4;">📋</div>
+        <div>
+          <div class="ac-name">Accountability Reporter</div>
+          <div class="ac-file">report_agent.py</div>
+        </div>
+      </div>
+      <p>Monthly: auto-generates a PDF accountability report — org scorecards, SLA breach counts, response rates, outcome rates, service gaps. Designed to be sent to 211, MN DHS, funders, or state legislators as evidence-based advocacy.</p>
+      <div class="ac-skills">
+        <span class="skill-tag" style="color:var(--navy); border-color:var(--navy);">PDF generation</span>
+        <span class="skill-tag" style="color:var(--navy); border-color:var(--navy);">monthly auto-run</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 5: SLA TIERS
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--red-lt);">⏱️</div>
+    <div>
+      <h2>SLA Response Windows — What Triggers Escalation</h2>
+      <p>Each organization type has a response deadline. Miss it → automatic consequences</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sla-tier-row">
+      <div class="sla-tier" style="background:var(--red-lt); border-color:var(--red);">
+        <h4 style="color:var(--red);">🚨 Crisis Shelters</h4>
+        <p>Domestic violence, immediate danger, hate incidents</p>
+        <div class="t-action" style="color:var(--red);">⏱️ SLA: 2 hours</div>
+        <div class="t-action" style="color:var(--red);">→ Miss = instant reroute to Tubman / Day One hotline</div>
+      </div>
+      <div class="sla-tier" style="background:#fff7e0; border-color:#c07820;">
+        <h4 style="color:#c07820;">🍎 Food &amp; Healthcare</h4>
+        <p>Food shelves, clinics, mental health services</p>
+        <div class="t-action" style="color:#c07820;">⏱️ SLA: 24 hours</div>
+        <div class="t-action" style="color:#c07820;">→ Miss = reroute to next org, score downgraded</div>
+      </div>
+      <div class="sla-tier" style="background:#fff7e0; border-color:#c07820;">
+        <h4 style="color:#c07820;">🏠 Housing &amp; Legal</h4>
+        <p>Emergency shelter, rental aid, immigration legal help</p>
+        <div class="t-action" style="color:#c07820;">⏱️ SLA: 48 hours</div>
+        <div class="t-action" style="color:#c07820;">→ Miss = follow-up email + reroute at breach</div>
+      </div>
+      <div class="sla-tier" style="background:var(--blue-lt); border-color:var(--blue);">
+        <h4 style="color:var(--blue);">🏛️ Government Agencies</h4>
+        <p>211, MN DHS, county services — the accountability targets</p>
+        <div class="t-action" style="color:var(--blue);">⏱️ SLA: 72 hours</div>
+        <div class="t-action" style="color:var(--blue);">→ Miss = logged for policy/legislative advocacy report</div>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:20px;">
+      <div class="ci">📊</div>
+      <p><strong>After 90 days of 211 non-responses:</strong> You will have a documented, timestamped record showing that 211 consistently fails its 72-hour SLA. The Accountability Reporter auto-packages this as a PDF that you can submit to MN legislative offices — far more powerful than a phone call that was ignored.</p>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 6: AUDIT DB LOOP
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--green-lt);">🔄</div>
+    <div>
+      <h2>The Accountability Loop — How It All Connects</h2>
+      <p>A closed loop where every contact improves the data and holds orgs to account</p>
+    </div>
+  </div>
+
+  <div class="audit-loop">
+    <div class="loop-row">
+      <div class="loop-step">
+        <div class="ls-circle" style="background:var(--blue-lt);">👤</div>
+        <h4>User Requests Help</h4>
+        <p>Chat input in EN or ZH</p>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="ls-circle" style="background:#ede8f8;">🔍</div>
+        <h4>Agents Find + Contact Org</h4>
+        <p>Resource Finder → Outreach Agent emails org</p>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="ls-circle" style="background:var(--orange-lt);">📋</div>
+        <h4>Audit DB Logs Contact</h4>
+        <p>Timestamp, org ID, token, category, status=PENDING</p>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="ls-circle" style="background:var(--red-lt);">⏱️</div>
+        <h4>SLA Clock Runs</h4>
+        <p>Response Monitor checks inbox hourly for token match</p>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="ls-circle" style="background:var(--green-lt);">📊</div>
+        <h4>Score Updates + Report</h4>
+        <p>Org reliability score adjusts. Monthly PDF report generated.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; padding-top:20px; border-top:1px dashed #e2e8f0;">
+      <div class="grid2">
+        <div>
+          <p style="font-size:.85rem; font-weight:700; margin-bottom:8px; color:var(--green);">✅ When org responds in time:</p>
+          <p style="font-size:.82rem; color:#4a5568;">Token found in inbox → referral marked RESPONDED → org response_rate improves → reliability score goes up → user is notified "Confirmed available" → outcome follow-up sent in 24 hrs</p>
+        </div>
+        <div>
+          <p style="font-size:.85rem; font-weight:700; margin-bottom:8px; color:var(--red);">❌ When org doesn't respond:</p>
+          <p style="font-size:.82rem; color:#4a5568;">SLA expires → breach logged → org score drops → Follow-up Agent sends reminder → if still no reply → Escalation Agent contacts next org → old org flagged in dashboard + advocacy report</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 7: PHASE ROADMAP
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--teal-lt);">🗓️</div>
+    <div>
+      <h2>4-Phase Build Plan</h2>
+      <p>Each phase is fully functional on its own — and sets up the next</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div class="phase-col" style="background:var(--red-lt);">
+      <h4 style="color:var(--red);">⚡ Phase 0 · Now</h4>
+      <ul>
+        <li>Build Audit DB schema (5 tables)</li>
+        <li>Set up email inbox for tracking</li>
+        <li>Write Outreach Agent (email only)</li>
+        <li>Write Response Monitor (IMAP scan)</li>
+        <li>Deploy admin dashboard v1</li>
+        <li>Seed 50 resources from 211 data you have</li>
+      </ul>
+    </div>
+    <div class="phase-col" style="background:var(--blue-lt);">
+      <h4 style="color:var(--blue);">🔧 Phase 1 · Weeks 1–4</h4>
+      <ul>
+        <li>Streamlit UI + bilingual toggle</li>
+        <li>Intent Router (keyword-based crisis detection)</li>
+        <li>Resource Finder (CSV-based, no RAG yet)</li>
+        <li>Outreach emails fully wired</li>
+        <li>SLA breach detection live</li>
+        <li>Follow-up Agent (reminder emails)</li>
+      </ul>
+    </div>
+    <div class="phase-col" style="background:var(--purple-lt);">
+      <h4 style="color:#7c5cbf;">🧠 Phase 2 · Weeks 5–10</h4>
+      <ul>
+        <li>RAG vector database (FAISS)</li>
+        <li>HuggingFace translation wired</li>
+        <li>Gemini Flash for policy + complex queries</li>
+        <li>Life Navigator (First-Week checklist)</li>
+        <li>Score-weighted resource ranking</li>
+        <li>Escalation Agent live</li>
+      </ul>
+    </div>
+    <div class="phase-col" style="background:var(--orange-lt);">
+      <h4 style="color:var(--orange);">📈 Phase 3 · Weeks 11+</h4>
+      <ul>
+        <li>Gap Analyst + weekly Gap Reports</li>
+        <li>Monthly PDF accountability reports</li>
+        <li>SMS follow-up via Twilio (free tier)</li>
+        <li>Public reliability scores on resource cards</li>
+        <li>Volunteer Interpreter network integration</li>
+        <li>Submit first advocacy report to MN DHS / 211</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       SECTION 8: TECH STACK
+  ═══════════════════════════════════ -->
+  <div class="sh">
+    <div class="ico" style="background:var(--gray-lt);">🛠️</div>
+    <div>
+      <h2>Technology Choices — All Zero-Cost</h2>
+      <p>Free tools that do enterprise-grade work</p>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card" style="border-top:4px solid var(--blue);">
+      <h3 style="margin-bottom:10px;">🖥️ UI &amp; Hosting</h3>
+      <p style="font-size:.84rem; color:#4a5568;"><strong>Streamlit</strong> — web app framework. <strong>Streamlit Cloud</strong> — free hosting with secrets.toml for API keys. <strong>GitHub</strong> — source of truth + auto-deploy on push.</p>
+    </div>
+    <div class="card" style="border-top:4px solid #7c5cbf;">
+      <h3 style="margin-bottom:10px;">🧠 AI Models</h3>
+      <p style="font-size:.84rem; color:#4a5568;"><strong>HuggingFace</strong> Helsinki-NLP/opus-mt — free translation. <strong>Gemini 1.5 Flash</strong> — free tier, complex queries. <strong>FAISS</strong> — free local vector DB for RAG.</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--orange);">
+      <h3 style="margin-bottom:10px;">📧 Outreach &amp; Tracking</h3>
+      <p style="font-size:.84rem; color:#4a5568;"><strong>Gmail SMTP</strong> — send outreach emails (free). <strong>IMAP</strong> — scan for replies with tracking tokens. Phase 3: <strong>Twilio</strong> free tier for SMS follow-up.</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--red);">
+      <h3 style="margin-bottom:10px;">🗃️ Audit Database</h3>
+      <p style="font-size:.84rem; color:#4a5568;"><strong>SQLite</strong> — zero-setup, local, instant. Phase 2 migration: <strong>Supabase</strong> free tier for cloud + real-time dashboard updates.</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--green);">
+      <h3 style="margin-bottom:10px;">📊 Reporting</h3>
+      <p style="font-size:.84rem; color:#4a5568;"><strong>Plotly / Altair</strong> — interactive audit charts. <strong>ReportLab</strong> — auto-generate monthly PDF accountability reports for advocacy.</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--teal);">
+      <h3 style="margin-bottom:10px;">🔒 Privacy</h3>
+      <p style="font-size:.84rem; color:#4a5568;">No PII stored. Users identified by SHA-256 hash only. Search terms hashed. GDPR-aligned design. Org contact emails stored only for outreach logging.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p><strong>MN Chinese Resource Hub — Agent-Driven Design v2</strong></p>
+    <p style="margin-top:4px;">Agents guide. Agents reach out. Agents follow up. Agents hold orgs accountable.</p>
+    <p style="margin-top:6px; font-style:italic; color:#9ba8b5;">Designed for fayfay · April 2026</p>
+  </div>
+
+</div>
+
+
+</body></html>
